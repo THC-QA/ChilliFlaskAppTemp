@@ -1,0 +1,13 @@
+<!doctype html>
+{%extends"layout.html"%}
+{%block body_content%}
+        <div class = "container">
+            <div class = "scrollable">
+                {%for key in index%}
+                    <h4>{{key}}</h4>
+                    <p>Recipe: {{recipes[key][0]}}</p>
+                    <p>Ingredients: {{recipes[key][1][0:]}}</p>
+                {%endfor%}
+            </div>
+        </div>
+{%endblock body_content%}
