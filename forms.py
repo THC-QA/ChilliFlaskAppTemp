@@ -42,9 +42,8 @@ class update_form(FlaskForm):
             ("INGREDIENTS", "ingredients"),
         ])
     if table_selection == "recipes":
-        name = SelectField(u"Select a Recipe", choices=[]
-        for names in self.r_names:
-            choices.append((names, str(names))))
+        self.name.choices = self.r_names
+        name = SelectField(u"Select a Recipe",)
         new_name = StringField('New Name',
         validators = [
             DataRequired(),
@@ -52,9 +51,8 @@ class update_form(FlaskForm):
             ]
         )
     elif table_selection == "ingredients":
-        name = SelectField(u"Select an Ingredient", choices=[]
-        for names in self.i_names:
-            choices.append((names, str(names))))
+        self.name.choices = self.i_names
+        name = SelectField(u"Select an Ingredient")
         new_name = StringField("Ingredient Name",
         validators = [
             DataRequired(),

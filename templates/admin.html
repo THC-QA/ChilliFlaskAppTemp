@@ -14,8 +14,10 @@
                         {{update_form.table_selection}}
                     </p>
                     <p>
-                        {{update_form.name.label}}<br>
-                        {{update_form.new_name}}
+                        {%if update_form.table_selection != ""%}
+                            {{update_form.name.label}}<br>
+                            {{update_form.new_name}}
+                        {%endif%}
                     </p>
                     <p>{{update_form.submit()}}</p>
                 </form>
