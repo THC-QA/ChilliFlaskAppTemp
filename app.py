@@ -91,7 +91,21 @@ def browse():
         recipes[row[0]].append(ingredients)
         mysql.connection.commit()
     index = [name for name in recipes]
+    cur.close()
     return render_template('browse.html', title = 'Browse All', recipes = recipes, index = index)
+
+@app.route('/admin')
+def admin():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT recipe_name FROM recipes")
+    r_names = cur.fetchall()
+    mysql.connection.commit()
+    cur.execute("SELECT ingredient_name FROM ingredients")
+    i_names = cur.fetchall()
+    mysql.connection.commit()
+    cur.close()
+    u_form = update_form(r_names, i_names)
+    return render_template('admin.html', title = "ADMIN", update_form = u_form)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', debug = True)

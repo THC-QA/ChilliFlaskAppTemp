@@ -1,0 +1,30 @@
+<!doctype html>
+{%extends"layout.html"%}
+{%block body_content%}
+<div class="container-fluid text-center">
+    <section >
+        <div class="row">
+            <div class="col col-sm-4">
+               <h3>UPDATE</h3>
+               <div>
+                <form method="POST" action="" novalidate>
+                    {{update_form.hidden_tag()}}
+                    <p>
+                        {{update_form.table_selection.label}}<br>
+                        {{update_form.table_selection}}
+                    </p>
+                    <p>
+                        {{update_form.name.label}}<br>
+                        {{update_form.new_name}}
+                    </p>
+                    <p>{{update_form.submit()}}</p>
+                </form>
+               </div>
+            </div>
+            <div class="col col-sm-4">
+                <h3>DELETE</h3>
+            </div>
+        </div>
+    </section>
+</div>
+{%endblock body_content%}
