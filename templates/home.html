@@ -1,0 +1,35 @@
+<!doctype html>
+{%extends"layout.html"%}
+{%block body_content%}
+<div class="container-fluid text-center">
+    <section >
+        <div class="row">
+            <div class="col col-sm-4">
+                <h3>Random Ingredients</h3>
+                <p>
+                    {%for i in ingredients%}
+                        <br>{{i[0]}}<br>---
+                    {%endfor%}
+                </p>
+            </div>
+            <div class="col col-sm-4">
+                <h3>Related</h3>
+                <p>
+                    PLACEHOLDER
+                </p>
+            </div>
+            <div class="col col-sm-4">
+                <h3>Random Recipes</h3>
+                <div class="scrollable">
+                    <p>
+                        {%for r in recipes%}
+                            <br><h5>{{r[0]}}</h5>
+                            {{r[1]}}<br>
+                        {%endfor%}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{%endblock body_content%}
