@@ -9,6 +9,7 @@
                <div>
                 <form method="POST" action="" novalidate>
                     {{update_form.hidden_tag()}}
+                    <div class="form-group">
                     <p>
                         {{update_form.table_selection.label}}<br>
                         {{update_form.table_selection}}
@@ -20,6 +21,7 @@
                         {%endif%}
                     </p>
                     <p>{{update_form.submit()}}</p>
+                    </div>
                 </form>
                </div>
             </div>
