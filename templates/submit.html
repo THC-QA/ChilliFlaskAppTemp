@@ -39,8 +39,33 @@
                 </p>
             </div>
             <div class="col col-sm-4">
-                <h3>Login</h3>
-                <p>FILLER</p>
+                <h3>Link Ingredients</h3>
+               <div>
+                <form method="POST" action="" novalidate>
+                    <fieldset>
+                        <div>
+                            <legend>Update a recipe to an ingredient:</legend>
+                            <label for="recipe_name">Recipe:</label><br>
+                            <select id="recipe_name" name="recipe_name"><br>
+                                {%for r in recipes%}
+                                    <option value="{{r[0]}}">{{r[0]}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div>
+                            <label for="ingredient_name">Ingredient:</label><br>
+                            <select id="ingredient_name" name="ingredient_name"><br>
+                                {%for i in ingredients%}
+                                    <option value="{{i[0]}}">{{i[0]}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div>
+                            <input type="submit" value="Connect">
+                        </div>
+                    </fieldset>
+                </form>
+               </div>
             </div>
         </div>
     </section>

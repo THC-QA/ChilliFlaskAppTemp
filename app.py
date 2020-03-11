@@ -53,8 +53,8 @@ def history():
 def about():
     return render_template('about.html', title = 'About')
 
-@app.route('/account', methods = ['GET', 'POST'])
-def account():
+@app.route('/submit', methods = ['GET', 'POST'])
+def submit():
     r_form = recipe_form()
     i_form = ingredient_form()
     cur = mysql.connection.cursor()
@@ -84,7 +84,9 @@ def account():
             mysql.connection.commit()
             cur.close()
             return redirect("/browse")
-    return render_template('account.html', title = 'Account', recipe_form = r_form, ingredient_form = i_form, recipes = r_names, ingredients = i_names)
+        else:
+            pass
+    return render_template('submit.html', title = 'Submit', recipe_form = r_form, ingredient_form = i_form, recipes = r_names, ingredients = i_names)
 
 @app.route('/browse')
 def browse():
@@ -136,8 +138,6 @@ def minimum():
         else:
             recipe_name = details["recipe_name"]
             cur = mysql.connection.cursor()
-            cur.execute("DELETE FROM recipe_ingredients WHERE recipe_name = (%s);", [recipe_name])
-            mysql.connection.commit()
             cur.execute("DELETE FROM recipes WHERE recipe_name = (%s);", [recipe_name])
             mysql.connection.commit()
             cur.close()
