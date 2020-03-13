@@ -100,13 +100,13 @@ def browse():
     cur.close()
     return render_template('browse.html', title = 'Browse All', recipes = recipes, index = index)
 
-@app.route('/search')
-def search():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT ingredient_name FROM ingredients WHERE ingredient_type = "Chilli")
-    chillies = cur.fetchall()
-    mysql.connection.commit()
-    cur.close()
+# @app.route('/search')
+# def search():
+#     cur = mysql.connection.cursor()
+#     cur.execute("SELECT ingredient_name FROM ingredients WHERE ingredient_type = "Chilli")
+#     chillies = cur.fetchall()
+#     mysql.connection.commit()
+#     cur.close()
 
 @app.route('/admin', methods = ["GET", "POST"])
 def admin():
