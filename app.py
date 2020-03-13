@@ -100,6 +100,14 @@ def browse():
     cur.close()
     return render_template('browse.html', title = 'Browse All', recipes = recipes, index = index)
 
+@app.route('/search')
+def search():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT ingredient_name FROM ingredients WHERE ingredient_type = "Chilli")
+    chillies = cur.fetchall()
+    mysql.connection.commit()
+    cur.close()
+
 @app.route('/admin', methods = ["GET", "POST"])
 def admin():
     cur = mysql.connection.cursor()
@@ -139,7 +147,7 @@ def minimum():
             cur.execute("SELECT id FROM ingredients WHERE ingredient_name = (%s)", [ingredient_name])
             ingredient_id = cur.fetchall()
             mysql.connection.commit()
-            cur.execute("DELETE FROM recipe_ingredients WHERE ingredient_id = (%s);", [ingredient_id])
+            cur.execute("DELETE IGNORE FROM recipe_ingredients WHERE ingredient_id = (%s);", [ingredient_id])
             mysql.connection.commit()
             cur.execute("DELETE FROM ingredients WHERE ingredient_name = (%s);", [ingredient_name])
             mysql.connection.commit()
@@ -151,7 +159,7 @@ def minimum():
             cur.execute("SELECT id FROM recipes WHERE recipe_name = (%s)", [recipe_name])
             recipe_id = cur.fetchall()
             mysql.connection.commit()
-            cur.execute("DELETE FROM recipe_ingredients WHERE recipe_id = (%s);", [recipe_id])
+            cur.execute("DELETE IGNORE FROM recipe_ingredients WHERE recipe_id = (%s);", [recipe_id])
             mysql.connection.commit()
             cur.execute("DELETE FROM recipes WHERE recipe_name = (%s);", [recipe_name])
             mysql.connection.commit()
