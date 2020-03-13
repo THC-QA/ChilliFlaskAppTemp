@@ -3,26 +3,6 @@ from flask_mysqldb import MySQL
 import os
 from forms import *
 
-dummyData = [
-    {
-        'user':{'username':'Admin','rating':'*****'},
-        'recipe_name':'Scotch Sunrise',
-        'chillies':'Scotch Bonnets, Birds Eye, Serrano, Thai Red',
-        'method':'Roast all the fruit and veg excepting coriander @ 200°C for 30 mins, blend with liquid and coriander. Simmer for 20 mins, blend again, bottle.'
-    },
-    {
-        'user':{'username':'SauceBoi','rating':'***'},
-        'recipe_name':'Poblano Panic',
-        'chillies':'Poblano, Jalapeno',
-        'method':'Roast all the veg @ 180°C for 35 mins, blend with tomato puree, lime, and oregano. Simmer for 15 mins, strain, bottle.'
-    },
-    {
-        'user':{'username':'ThePainChef','rating':'****'},
-        'recipe_name':'Insanity Sauce',
-        'chillies':'Ghost, Chocolate Hab, Naga',
-        'method':'Ferment for 1 month in 3 percent brine. Blend with roasted garlic, pH test and bottle. WEAR GLOVES.'
-    }
-]
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.environ.get("SECRETKEY")
@@ -71,7 +51,7 @@ def submit():
             recipe_method = r_form.recipe_method.data
             flash("Thank you for your submission of {} sauce.".format(r_form.recipe_name.data))
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO recipes(recipe_name, recipe_method) VALUES (%s, %s)", (recipe_name, recipe_method))
+            cur.execute("INSERT IGNORE INTO recipes(recipe_name, recipe_method) VALUES (%s, %s)", (recipe_name, recipe_method))
             mysql.connection.commit()
             cur.close()
             return redirect("/browse")
@@ -80,12 +60,27 @@ def submit():
             ingredient_name = i_form.ingredient_name.data
             ingredient_type = i_form.ingredient_type.data
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO ingredients(ingredient_name, ingredient_type) VALUES (%s, %s)", (ingredient_name, ingredient_type))
+            cur.execute("INSERT IGNORE INTO ingredients(ingredient_name, ingredient_type) VALUES (%s, %s)", (ingredient_name, ingredient_type))
             mysql.connection.commit()
             cur.close()
             return redirect("/browse")
         else:
-            pass
+            details = request.form
+            recipe = details["recipe_name"]
+            ingredient = details["ingredient_name"]
+            flash("Thank you.")
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT id FROM recipes WHERE recipe_name = (%s)", [recipe])
+            recipe = cur.fetchall()
+            mysql.connection.commit()
+            cur.execute("SELECT id FROM ingredients WHERE ingredient_name = (%s)", [ingredient])
+            ingredient = cur.fetchall()
+            mysql.connection.commit()
+            cur.execute("INSERT IGNORE INTO recipe_ingredients(recipe_id, ingredient_id) VALUES (%s, %s)", (recipe, ingredient))
+            mysql.connection.commit()
+            cur.close()
+            return redirect("/browse")
+
     return render_template('submit.html', title = 'Submit', recipe_form = r_form, ingredient_form = i_form, recipes = r_names, ingredients = i_names)
 
 @app.route('/browse')
