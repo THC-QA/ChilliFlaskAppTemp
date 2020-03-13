@@ -119,6 +119,9 @@ def minimum():
     cur.execute("SELECT recipe_name FROM recipes")
     r_names = cur.fetchall()
     mysql.connection.commit()
+    cur.execute("SELECT ingredient_name FROM ingredients")
+    i_names = cur.fetchall()
+    mysql.connection.commit()
     cur.close()
     if request.method == "POST":
         details = request.form
@@ -130,14 +133,31 @@ def minimum():
             mysql.connection.commit()
             cur.close()
             return redirect("/browse")
+        elif "ingredient_name" in details:
+            ingredient_name = details["ingredient_name"]
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT id FROM ingredients WHERE ingredient_name = (%s)", [ingredient_name])
+            ingredient_id = cur.fetchall()
+            mysql.connection.commit()
+            cur.execute("DELETE FROM recipe_ingredients WHERE ingredient_id = (%s);", [ingredient_id])
+            mysql.connection.commit()
+            cur.execute("DELETE FROM ingredients WHERE ingredient_name = (%s);", [ingredient_name])
+            mysql.connection.commit()
+            cur.close()
+            return redirect("/browse")
         else:
             recipe_name = details["recipe_name"]
             cur = mysql.connection.cursor()
+            cur.execute("SELECT id FROM recipes WHERE recipe_name = (%s)", [recipe_name])
+            recipe_id = cur.fetchall()
+            mysql.connection.commit()
+            cur.execute("DELETE FROM recipe_ingredients WHERE recipe_id = (%s);", [recipe_id])
+            mysql.connection.commit()
             cur.execute("DELETE FROM recipes WHERE recipe_name = (%s);", [recipe_name])
             mysql.connection.commit()
             cur.close()
             return redirect("/browse")
-    return render_template('mvp.html', title = "MINIMUM VIABILITY", recipes = r_names)
+    return render_template('mvp.html', title = "MINIMUM VIABILITY", recipes = r_names, ingredients = i_names)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', debug = True)

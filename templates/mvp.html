@@ -47,6 +47,27 @@
                     </form>
                    </div>
             </div>
+            <div class="col-sm-4">
+                <h3>DELETE</h3>
+                <div>
+                    <form method="POST" action="" novalidate>
+                        <fieldset>
+                            <div>
+                                <legend>Delete an ingredient:</legend>
+                                <label for="ingredient_name">Ingredient:</label><br>
+                                <select id="ingredient_name" name="ingredient_name"><br>
+                                    {%for r in ingredients%}
+                                    <option value="{{r[0]}}">{{r[0]}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+                            <div>
+                                <input type="submit" value="Delete">
+                            </div>
+                        </fieldset>
+                    </form>
+                   </div>
+            </div>
         </div>
     </section>
 </div>
