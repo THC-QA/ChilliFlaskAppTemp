@@ -46,7 +46,7 @@
                         <div>
                             <legend>Connect a recipe to its ingredients:</legend>
                             <label for="recipe_name">Recipe:</label><br>
-                            <select id="recipe_name" name="recipe_name"><br>
+                            <select id="recipe_name" name="recipe_name" required><br>
                                 {%for r in recipes%}
                                     <option value="{{r[0]}}">{{r[0]}}</option>
                                 {%endfor%}
@@ -54,7 +54,7 @@
                         </div>
                         <div>
                             <label for="ingredient_name">Ingredient:</label><br>
-                            <select id="ingredient_name" name="ingredient_name"><br>
+                            <select id="ingredient_name" name="ingredient_name" required><br>
                                 {%for i in ingredients%}
                                     <option value="{{i[0]}}">{{i[0]}}</option>
                                 {%endfor%}
