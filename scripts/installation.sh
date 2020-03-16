@@ -2,12 +2,22 @@
 
 source venv/bin/activate
 
-sudo python3 -m pip install flask
+pip3 install Flask
 
-sudo python3 -m pip install flask_mysqldb
+pip3 install flask_mysqldb
 
-sudo python3 -m pip install Flask-WTF
+pip3 install flask-bootstrap
 
-source ~/.bashrc
+pip3 install flask-ckeditor
+
+pip3 install gunicorn
+
+pip3 install Werkzeug
+
+pip3 install Flask-WTF
+
+source ~/bashrc
 
 python3 app.py
+
+gunicorn --workers=4 --bind=0.0.0.0:5000 app:app
