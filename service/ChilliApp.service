@@ -2,6 +2,6 @@
 Description = ChilliApp_flask
 [Service]
 User=jenkins
-ExecStart = /var/lib/jenkins/workspace/FlaskApp Example Pipeline/scripts/installation.sh
+ExecStart = "/var/lib/jenkins/workspace/FlaskApp Example Pipeline/scripts/installation.sh"
 [Install]
 WantedBy = multi-user.target
