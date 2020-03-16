@@ -10,4 +10,4 @@ sudo python3 -m pip install Flask-WTF
 
 source ~/.bashrc
 
-sudo python3 app.py
+python3 app.py
