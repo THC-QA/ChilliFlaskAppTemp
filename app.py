@@ -111,18 +111,18 @@ def browse():
 #     mysql.connection.commit()
 #     cur.close()
 
-@app.route('/admin', methods = ["GET", "POST"])
-def admin():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT recipe_name FROM recipes")
-    r_names = cur.fetchall()
-    mysql.connection.commit()
-    cur.execute("SELECT ingredient_name FROM ingredients")
-    i_names = cur.fetchall()
-    mysql.connection.commit()
-    cur.close()
-    u_form = update_form(r_names, i_names)
-    return render_template('admin.html', title = "ADMIN", update_form = u_form)
+# @app.route('/admin', methods = ["GET", "POST"])
+# def admin():
+#     cur = mysql.connection.cursor()
+#     cur.execute("SELECT recipe_name FROM recipes")
+#     r_names = cur.fetchall()
+#     mysql.connection.commit()
+#     cur.execute("SELECT ingredient_name FROM ingredients")
+#     i_names = cur.fetchall()
+#     mysql.connection.commit()
+#     cur.close()
+#     u_form = update_form(r_names, i_names)
+#     return render_template('admin.html', title = "ADMIN", update_form = u_form)
 
 @app.route('/mvp', methods = ["GET", "POST"])
 def minimum():

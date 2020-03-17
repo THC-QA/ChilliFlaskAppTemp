@@ -16,6 +16,12 @@ pip3 install Werkzeug
 
 pip3 install Flask-WTF
 
+pip3 install pytest
+
+pip3 install urllib3
+
+pip3 install coverage
+
 source ~/.bashrc
 
 python3 "/var/lib/jenkins/workspace/FlaskApp Example Pipeline/app.py"
