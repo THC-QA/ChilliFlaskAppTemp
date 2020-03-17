@@ -94,7 +94,8 @@ def browse():
         recipes[row[0]]=[row[1]]
         cur.execute("SELECT ingredient_name FROM recipes r JOIN recipe_ingredients r_i ON r.id=r_i.recipe_id JOIN ingredients i ON i.id=r_i.ingredient_id WHERE r.recipe_name=%s;", [row[0]])
         ingredients = cur.fetchall()
-        recipes[row[0]].append(ingredients)
+        for i in ingredients:
+            recipes[row[0]].append(i[0])
         mysql.connection.commit()
     index = [name for name in recipes]
     cur.close()

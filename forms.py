@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, BooleanField, PasswordField
+from wtforms import StringField, SubmitField, SelectField, BooleanField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Length
 class recipe_form(FlaskForm):
     recipe_name = StringField('Recipe Name',
@@ -8,7 +8,7 @@ class recipe_form(FlaskForm):
             Length(min=4, max=50)
             ]
         )
-    recipe_method = StringField('Recipe Instructions',
+    recipe_method = TextAreaField('Recipe Instructions',
         validators = [
             DataRequired(),
             Length(min=10, max=10000)
@@ -33,6 +33,7 @@ class ingredient_form(FlaskForm):
         ])
     submit = SubmitField("Post Ingredient")
 class update_form(FlaskForm):
+    # form requires outside assignment of dynamic values for the select fields, but can't be done with the binary form choice, so was dropped
     def __init__(self,r_names, i_names):
         self.r_names = r_names
         self.i_names = i_names
