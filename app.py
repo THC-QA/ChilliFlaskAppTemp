@@ -5,6 +5,8 @@ from forms import *
 
 app = Flask(__name__)
 
+# Call config variables from pre-assigned environmentals, check Jenkinsfile for preferred source
+
 app.config['SECRET_KEY'] = os.environ.get("SECRETKEY")
 app.config['MYSQL_HOST'] = os.environ.get('MYSQLHOST')
 app.config['MYSQL_USER'] = os.environ.get('MYSQL_USER')
