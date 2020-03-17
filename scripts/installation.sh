@@ -21,9 +21,3 @@ pip3 install pytest
 pip3 install urllib3
 
 pip3 install coverage
-
-source ~/.bashrc
-
-python3 "/var/lib/jenkins/workspace/FlaskApp Example Pipeline/app.py"
-
-gunicorn --workers=4 --bind=0.0.0.0:5000 app:app

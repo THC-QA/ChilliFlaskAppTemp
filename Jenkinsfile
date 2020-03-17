@@ -7,6 +7,7 @@ pipeline{
                 sh 'echo "Dev-test pre-install and install."'
                 sh 'chmod +x ./scripts/*'
                 sh './scripts/before_installation.sh'
+                sh './scripts/installation.sh'
                 sh './scripts/make_service.sh'
             }
         }
