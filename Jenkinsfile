@@ -9,7 +9,6 @@ pipeline{
                 sh './scripts/before_installation.sh'
                 sh './scripts/installation.sh'
                 sh './scripts/make_service.sh'
-                sh '"/var/lib/jenkins/workspace/FlaskApp Example Pipeline/venv/bin/gunicorn" --workers=4 --bind=0.0.0.0:5001 app:app'
             }
         }
         stage("urlTesting"){
