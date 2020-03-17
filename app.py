@@ -17,6 +17,7 @@ mysql = MySQL(app)
 
 @app.route('/')
 def home():
+    """This function calls the homepage, passing a LIMIT 3 random selection fo recipes and ingredients to Jinja"""
     cur = mysql.connection.cursor()
     cur.execute("SELECT ingredient_name, ingredient_type FROM ingredients ORDER BY RAND() LIMIT 3;")
     rand_i = cur.fetchall()
@@ -29,14 +30,17 @@ def home():
 
 @app.route('/history')
 def history():
+    """This function calls the 'history' page, largely flavour text"""
     return render_template('history.html', title = 'History of the Chilli')
 
 @app.route('/about')
 def about():
+    """This function calls the 'about' page, largely flavour text"""
     return render_template('about.html', title = 'About')
 
 @app.route('/submit', methods = ['GET', 'POST'])
 def submit():
+    """This function calls the submit page, handling the form feedback and passing to one of three tables, two WTForms are used, and one HTML"""
     r_form = recipe_form()
     i_form = ingredient_form()
     cur = mysql.connection.cursor()
@@ -87,6 +91,7 @@ def submit():
 
 @app.route('/browse')
 def browse():
+    """This function calls the browse page, displaying the linked information of all recipes using a joining table"""
     cur = mysql.connection.cursor()
     cur.execute("SELECT recipe_name, recipe_method FROM recipes")
     rows = cur.fetchall()
@@ -126,6 +131,7 @@ def browse():
 
 @app.route('/mvp', methods = ["GET", "POST"])
 def minimum():
+    """This function calls the MVP page, fulfilling the minimum viability of the brief without requiring a user function, form details passed to one of two tables for three processes"""
     cur = mysql.connection.cursor()
     cur.execute("SELECT recipe_name FROM recipes")
     r_names = cur.fetchall()
