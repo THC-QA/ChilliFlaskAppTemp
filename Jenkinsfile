@@ -10,5 +10,12 @@ pipeline{
                 sh './scripts/make_service.sh'
             }
         }
+        stage("urlTesting"){
+            steps{
+                sh coverage run -m pytest tests/url_testing.py
+                sh coverage report -m
+            }
+
+        }
     }
 }
