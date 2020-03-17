@@ -12,8 +12,8 @@ pipeline{
         }
         stage("urlTesting"){
             steps{
-                sh coverage run -m pytest tests/url_testing.py
-                sh coverage report -m
+                sh 'coverage run -m pytest tests/url_testing.py'
+                sh 'coverage report -m'
             }
 
         }
