@@ -9,6 +9,7 @@ pipeline{
                 sh './scripts/before_installation.sh'
                 sh './scripts/installation.sh'
                 sh './scripts/make_service.sh'
+                sh 'python3 -m gunicorn --workers=4 --bind=0.0.0.0:5001 app:app'
             }
         }
         stage("urlTesting"){
