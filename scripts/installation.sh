@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source venv/bin/activate
+source "/var/lib/jenkins/workspace/FlaskApp Example Pipeline/venv/bin/activate"
 
 pip3 install Flask
 
