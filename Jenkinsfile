@@ -20,10 +20,7 @@ pipeline{
         }
         stage("dbTesting"){
             steps{
-                sh 'cd ~'
-                sh 'ls -la'
-                sh 'source ~/.bashrc'
-                sh 'cd "/var/lib/jenkins/workspace/FlaskApp Example Pipeline"'
+                sh 'sudo source ~/.bashrc'
                 sh 'python3 -m coverage run -m pytest tests/db_testing.py'
                 sh 'python3 -m coverage report -m'
             }
