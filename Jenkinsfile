@@ -20,9 +20,7 @@ pipeline{
         }
         stage("dbTesting"){
             steps{
-                sh 'source /var/lib/jenkins/.bashrc'
-                sh 'python3 -m coverage run -m pytest tests/db_testing.py'
-                sh 'python3 -m coverage report -m'
+                sh './scripts/db_test.sh'
             }
         }
     }
