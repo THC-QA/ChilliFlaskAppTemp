@@ -175,20 +175,91 @@ def test_ingredient_unique():
 def test_recipe_ingredients_insert():
     name = "Placeholder"
     with app.app_context():
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM test_recipe_ingredients;")
-            start = len(cur.fetchall())
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM test_recipe_ingredients;")
+        start = len(cur.fetchall())
+        mysql.connection.commit()
+        cur.execute("SELECT id FROM test_recipes WHERE recipe_name = (%s)", [name])
+        recipe = cur.fetchall()
+        mysql.connection.commit()
+        cur.execute("SELECT id FROM test_ingredients WHERE ingredient_name = (%s)", [name])
+        ingredient = cur.fetchall()
+        mysql.connection.commit()
+        cur.execute("INSERT IGNORE INTO test_recipe_ingredients(recipe_id, ingredient_id) VALUES (%s, %s)", (recipe, ingredient))
+        mysql.connection.commit()
+        cur.execute("SELECT * FROM test_recipe_ingredients;")
+        end = len(cur.fetchall())
+        mysql.connection.commit()
+        cur.close()
+        assert abs(start - end) == 1
+
+def test_browse():
+    with app.app_context():
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT recipe_name, recipe_method FROM test_recipes")
+        rows = cur.fetchall()
+        mysql.connection.commit()
+        recipes = {}
+        for row in rows:
+            recipes[row[0]]=[row[1]]
+            cur.execute("SELECT ingredient_name FROM test_recipes r JOIN test_recipe_ingredients r_i ON r.id=r_i.recipe_id JOIN test_ingredients i ON i.id=r_i.ingredient_id WHERE r.recipe_name=%s;", [row[0]])
+            ingredients = cur.fetchall()
+            for i in ingredients:
+                recipes[row[0]].append(i[0])
             mysql.connection.commit()
-            cur.execute("SELECT id FROM test_recipes WHERE recipe_name = (%s)", [name])
-            recipe = cur.fetchall()
-            mysql.connection.commit()
-            cur.execute("SELECT id FROM test_ingredients WHERE ingredient_name = (%s)", [name])
-            ingredient = cur.fetchall()
-            mysql.connection.commit()
-            cur.execute("INSERT IGNORE INTO test_recipe_ingredients(recipe_id, ingredient_id) VALUES (%s, %s)", (recipe, ingredient))
-            mysql.connection.commit()
-            cur.execute("SELECT * FROM test_recipe_ingredients;")
-            end = len(cur.fetchall())
+        index = [name for name in recipes]
+        cur.close()
+        assert len(index) == 1 and len(recipes["Placeholder"]) == 2
+
+def test_recipe_rename():
+    recipe_name = "Placeholder"
+    new_name = "place_holder"
+    with app.app_context():
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE test_recipes SET recipe_name = (%s) WHERE recipe_name = (%s);", (new_name, recipe_name))
+        mysql.connection.commit()
+        cur.execute("SELECT * FROM test_recipes WHERE recipe_name = (%s);", [new_name])
+        result = len(cur.fetchall())
+        mysql.connection.commit()
+        cur.close()
+        assert result == 1
+
+def test_conflict_deletion():
+    with app.app_context():
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute("DELETE FROM test_ingredients WHERE ingredient_name = 'Placeholder'")
+            deleted = len(cur.fetchall())
             mysql.connection.commit()
             cur.close()
-            assert abs(start - end) == 1
+        except:
+            deleted = False
+        assert deleted == 0
+
+def test_clean_ingredient_deletion():
+    ingredient_name = "Placeholder"
+    with app.app_context():
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id FROM test_ingredients WHERE ingredient_name = (%s)", [ingredient_name])
+        ingredient_id = cur.fetchall()
+        mysql.connection.commit()
+        cur.execute("DELETE IGNORE FROM test_recipe_ingredients WHERE ingredient_id = (%s);", [ingredient_id])
+        mysql.connection.commit()
+        cur.execute("DELETE FROM test_ingredients WHERE ingredient_name = (%s);", [ingredient_name])
+        mysql.connection.commit()
+        cur.execute("SELECT * FROM test_ingredients;")
+        deleted = len(cur.fetchall()) + 1
+        mysql.connection.commit()
+        cur.close()
+        assert deleted
+
+def test_recipe_deletion():
+    with app.app_context():
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE IGNORE FROM test_recipes WHERE recipe_name = 'place_holder';")
+        mysql.connection.commit()
+        cur.execute("SELECT * FROM test_recipes;")
+        deleted = len(cur.fetchall()) + 1
+        mysql.connection.commit()
+        cur.close()
+        assert deleted
