@@ -20,7 +20,6 @@ pipeline{
         }
         stage("dbTesting"){
             steps{
-                sh 'source ~/.bashrc'
                 sh 'python3 -m coverage run -m pytest tests/db_testing.py'
                 sh 'python3 -m coverage report -m'
             }
