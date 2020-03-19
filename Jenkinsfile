@@ -9,7 +9,7 @@ pipeline{
                 sh './scripts/before_installation.sh'
                 sh './scripts/installation.sh'
                 sh './scripts/make_service.sh'
-                sh './scripts/gunicorn.sh'
+                sh './scripts/ms_gu.sh'
             }
         }
         stage("urlTesting"){
